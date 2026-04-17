@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>지식 강탈기 v1.0</title>
+<title>지식 강탈기 v2.0</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Jua&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700&display=swap');
 
@@ -45,9 +45,79 @@
     text-align: center;
     font-size: 0.8rem;
     color: #888;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     font-family: 'Jua', sans-serif;
   }
+
+  .name-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 16px 16px;
+    flex-wrap: wrap;
+  }
+
+  .name-label {
+    font-family: 'Jua', sans-serif;
+    font-size: 0.85rem;
+    color: #aaa;
+    white-space: nowrap;
+  }
+
+  #prof-name-input {
+    font-family: 'Jua', sans-serif;
+    font-size: 0.9rem;
+    background: var(--panel);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    padding: 6px 12px;
+    width: 140px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+  }
+
+  #prof-name-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(255,79,0,0.3);
+  }
+
+  #name-confirm-btn {
+    font-family: 'Jua', sans-serif;
+    font-size: 0.8rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  #name-confirm-btn:hover { background: #ff7700; transform: scale(1.04); }
+
+  .sound-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  #sound-btn {
+    font-family: 'Jua', sans-serif;
+    font-size: 0.75rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: #aaa;
+    border-radius: 20px;
+    padding: 4px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  #sound-btn:hover { border-color: var(--blue); color: var(--blue); }
+  #sound-btn.on { border-color: var(--green); color: var(--green); background: rgba(0,255,136,0.07); }
 
   .arena {
     display: flex;
@@ -59,7 +129,6 @@
     min-height: 260px;
   }
 
-  /* ---- CHARACTERS ---- */
   .character {
     display: flex;
     flex-direction: column;
@@ -75,23 +144,12 @@
     text-align: center;
   }
 
-  .char-body {
-    position: relative;
-    width: 80px;
-    height: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Professor SVG */
   .prof-svg, .student-svg {
     width: 80px;
     height: 120px;
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
   }
 
-  /* ---- KNOWLEDGE PARTICLES ---- */
   #particle-container {
     position: absolute;
     top: 0; left: 0;
@@ -108,10 +166,8 @@
     text-shadow: 0 0 8px var(--blue);
     pointer-events: none;
     white-space: nowrap;
-    animation: none;
   }
 
-  /* ---- STATS PANEL ---- */
   .stats-row {
     display: flex;
     justify-content: center;
@@ -129,68 +185,21 @@
     min-width: 110px;
   }
 
-  .stat-label {
-    font-size: 0.65rem;
-    color: #666;
-    margin-bottom: 4px;
-    font-family: 'Jua', sans-serif;
-  }
-
-  .stat-value {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 1.3rem;
-  }
-
+  .stat-label { font-size: 0.65rem; color: #666; margin-bottom: 4px; font-family: 'Jua', sans-serif; }
+  .stat-value { font-family: 'Black Han Sans', sans-serif; font-size: 1.3rem; }
   .stat-value.prof { color: var(--accent); }
   .stat-value.student { color: var(--green); }
   .stat-value.stolen { color: var(--yellow); }
 
-  /* ---- BARS ---- */
-  .bar-section {
-    padding: 0 20px 16px;
-    max-width: 520px;
-    margin: 0 auto;
-  }
-
-  .bar-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .bar-name {
-    font-family: 'Jua', sans-serif;
-    font-size: 0.75rem;
-    width: 90px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .bar-track {
-    flex: 1;
-    height: 14px;
-    background: #1a1a35;
-    border-radius: 7px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-
-  .bar-fill {
-    height: 100%;
-    border-radius: 7px;
-    transition: width 0.4s ease;
-  }
-
+  .bar-section { padding: 0 20px 16px; max-width: 520px; margin: 0 auto; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar-name { font-family: 'Jua', sans-serif; font-size: 0.75rem; width: 90px; text-align: right; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 14px; background: #1a1a35; border-radius: 7px; overflow: hidden; border: 1px solid var(--border); }
+  .bar-fill { height: 100%; border-radius: 7px; transition: width 0.4s ease; }
   .bar-fill.prof-fill { background: linear-gradient(90deg, #ff6b00, #ff4f00); box-shadow: 0 0 8px rgba(255,79,0,0.5); }
   .bar-fill.student-fill { background: linear-gradient(90deg, #00e87a, #00ff88); box-shadow: 0 0 8px rgba(0,255,136,0.4); }
 
-  /* ---- BUTTON ---- */
-  .btn-section {
-    display: flex;
-    justify-content: center;
-    padding: 0 16px 16px;
-  }
+  .btn-section { display: flex; justify-content: center; padding: 0 16px 16px; }
 
   #steal-btn {
     font-family: 'Black Han Sans', sans-serif;
@@ -208,59 +217,31 @@
     overflow: hidden;
   }
 
-  #steal-btn:hover {
-    transform: scale(1.04);
-    box-shadow: 0 6px 28px rgba(255,79,0,0.7);
-  }
-
-  #steal-btn:active {
-    transform: scale(0.97);
-  }
-
-  #steal-btn:disabled {
-    background: #333;
-    box-shadow: none;
-    cursor: not-allowed;
-    color: #666;
-  }
+  #steal-btn:hover { transform: scale(1.04); box-shadow: 0 6px 28px rgba(255,79,0,0.7); }
+  #steal-btn:active { transform: scale(0.97); }
+  #steal-btn:disabled { background: #333; box-shadow: none; cursor: not-allowed; color: #666; }
 
   #steal-btn .ripple {
-    position: absolute;
-    border-radius: 50%;
+    position: absolute; border-radius: 50%;
     background: rgba(255,255,255,0.3);
-    transform: scale(0);
-    animation: ripple 0.5s linear;
-    pointer-events: none;
+    transform: scale(0); animation: ripple 0.5s linear; pointer-events: none;
   }
 
-  @keyframes ripple {
-    to { transform: scale(4); opacity: 0; }
+  @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+  #status-text {
+    text-align: center; font-family: 'Jua', sans-serif;
+    font-size: 0.9rem; min-height: 22px; color: #777;
+    padding: 0 16px 12px; transition: color 0.3s;
   }
 
-  /* ---- LOG ---- */
-  .log-section {
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 0 16px 24px;
-  }
-
-  .log-title {
-    font-family: 'Jua', sans-serif;
-    font-size: 0.75rem;
-    color: #555;
-    margin-bottom: 8px;
-  }
+  .log-section { max-width: 520px; margin: 0 auto; padding: 0 16px 24px; }
+  .log-title { font-family: 'Jua', sans-serif; font-size: 0.75rem; color: #555; margin-bottom: 8px; }
 
   #log-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    height: 120px;
-    overflow-y: auto;
-    font-size: 0.78rem;
-    line-height: 1.8;
-    color: #aaa;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px; height: 120px;
+    overflow-y: auto; font-size: 0.78rem; line-height: 1.8; color: #aaa;
   }
 
   #log-box::-webkit-scrollbar { width: 4px; }
@@ -276,18 +257,6 @@
     to { opacity: 1; transform: translateX(0); }
   }
 
-  /* ---- STATUS TEXT ---- */
-  #status-text {
-    text-align: center;
-    font-family: 'Jua', sans-serif;
-    font-size: 0.9rem;
-    min-height: 22px;
-    color: #777;
-    padding: 0 16px 12px;
-    transition: color 0.3s;
-  }
-
-  /* ---- SHAKE ANIMATION ---- */
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-5px) rotate(-3deg); }
@@ -305,145 +274,146 @@
 
   .absorbing { animation: glow-pulse 0.6s ease infinite; }
 
-  /* ---- FINAL STATE ---- */
   .victory-banner {
-    display: none;
-    text-align: center;
+    display: none; text-align: center;
     font-family: 'Black Han Sans', sans-serif;
     font-size: clamp(1.2rem, 3vw, 1.6rem);
     color: var(--yellow);
     text-shadow: 0 0 20px rgba(255,230,0,0.6);
-    padding: 8px 16px;
-    animation: fadeIn 0.5s ease;
+    padding: 8px 16px; animation: fadeIn 0.5s ease;
   }
 
+  .made-by {
+    position: fixed;
+    bottom: 14px;
+    left: 18px;
+    font-family: 'Jua', sans-serif;
+    font-size: 0.72rem;
+    color: #444;
+    z-index: 50;
+    letter-spacing: 0.5px;
+  }
+
+  .made-by a {
+    color: var(--blue);
+    text-decoration: none;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+
+  .made-by a:hover {
+    color: #fff;
+    text-shadow: 0 0 8px var(--blue);
+  }
+
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--panel); border: 1px solid var(--green);
+    color: var(--green); font-family: 'Jua', sans-serif; font-size: 0.85rem;
+    padding: 8px 20px; border-radius: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s; z-index: 100; white-space: nowrap;
+  }
+
+  .toast.show { opacity: 1; }
 </style>
 </head>
 <body>
 
-<h1>🧠 지식 강탈기 v1.0</h1>
+<h1>🧠 지식 강탈기 v2.0</h1>
 <p class="subtitle">공대생 필수 아이템 · 특허출원중 · 교수님 허락 없음</p>
+
+<div class="name-section">
+  <span class="name-label">👨‍🏫 교수님 이름:</span>
+  <input id="prof-name-input" type="text" maxlength="10" placeholder="홍길동" value="홍길동"/>
+  <button id="name-confirm-btn" onclick="confirmName()">설정 ✓</button>
+</div>
+
+<div class="sound-toggle">
+  <button id="sound-btn" onclick="toggleSound()">🔇 소리 OFF (클릭해서 켜기)</button>
+</div>
 
 <div class="arena" id="arena">
   <div id="particle-container"></div>
 
-  <!-- Professor -->
   <div class="character" id="prof-char">
     <svg class="prof-svg" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" id="prof-svg">
-      <!-- Body -->
       <rect x="22" y="60" width="36" height="44" rx="6" fill="#2a5298"/>
-      <!-- Coat lapels -->
       <polygon points="22,60 38,72 38,104 22,104" fill="#1e3f7a"/>
       <polygon points="58,60 42,72 42,104 58,104" fill="#1e3f7a"/>
-      <!-- Shirt/tie -->
       <rect x="35" y="62" width="10" height="30" fill="#fff" rx="2"/>
       <polygon points="38,65 42,65 40,85" fill="#cc2200"/>
-      <!-- Arms -->
       <rect x="8" y="60" width="14" height="8" rx="4" fill="#2a5298" transform="rotate(20,15,64)"/>
       <rect x="58" y="60" width="14" height="8" rx="4" fill="#2a5298" transform="rotate(-15,65,64)"/>
-      <!-- Hands holding chalk -->
       <circle cx="10" cy="74" r="5" fill="#f5c89a"/>
       <rect x="6" y="77" width="8" height="3" rx="1.5" fill="#eee"/>
       <circle cx="70" cy="71" r="5" fill="#f5c89a"/>
-      <!-- Legs -->
       <rect x="26" y="100" width="12" height="18" rx="4" fill="#1a1a3a"/>
       <rect x="42" y="100" width="12" height="18" rx="4" fill="#1a1a3a"/>
-      <!-- Shoes -->
       <ellipse cx="32" cy="118" rx="8" ry="4" fill="#111"/>
       <ellipse cx="48" cy="118" rx="8" ry="4" fill="#111"/>
-      <!-- Neck -->
       <rect x="33" y="50" width="14" height="14" rx="5" fill="#f5c89a"/>
-      <!-- Head (bald on top) -->
       <ellipse cx="40" cy="38" rx="20" ry="20" fill="#f5c89a"/>
-      <!-- Bald shine -->
       <ellipse cx="36" cy="28" rx="7" ry="4" fill="rgba(255,255,255,0.2)" transform="rotate(-10,36,28)"/>
-      <!-- Side hair remnants (tragic) -->
       <path d="M20 38 Q17 32 19 26 Q21 35 24 36" fill="#4a3520"/>
       <path d="M60 38 Q63 32 61 26 Q59 35 56 36" fill="#4a3520"/>
-      <!-- Ears -->
       <ellipse cx="20" cy="40" rx="4" ry="5" fill="#e8b080"/>
       <ellipse cx="60" cy="40" rx="4" ry="5" fill="#e8b080"/>
-      <!-- Eyes -->
       <ellipse cx="34" cy="38" rx="3.5" ry="3" fill="white"/>
       <ellipse cx="46" cy="38" rx="3.5" ry="3" fill="white"/>
       <circle cx="35" cy="38" r="2" fill="#333"/>
       <circle cx="47" cy="38" r="2" fill="#333"/>
-      <!-- Glasses -->
       <circle cx="34" cy="38" r="5" fill="none" stroke="#8B6914" stroke-width="1.5"/>
       <circle cx="46" cy="38" r="5" fill="none" stroke="#8B6914" stroke-width="1.5"/>
       <line x1="39" y1="38" x2="41" y2="38" stroke="#8B6914" stroke-width="1.5"/>
       <line x1="20" y1="36" x2="29" y2="37" stroke="#8B6914" stroke-width="1.5"/>
       <line x1="51" y1="37" x2="60" y2="36" stroke="#8B6914" stroke-width="1.5"/>
-      <!-- Nose -->
       <ellipse cx="40" cy="43" rx="3" ry="2" fill="#e8a070"/>
-      <!-- Mouth (neutral/suspicious) -->
       <path d="M35 50 Q40 48 45 50" stroke="#b07050" stroke-width="1.5" fill="none"/>
-      <!-- Mustache -->
       <path d="M34 47 Q37 49 40 47 Q43 49 46 47" fill="#4a3520"/>
-      <!-- Brain aura (hidden initially) -->
       <g id="brain-glow" opacity="0">
-        <ellipse cx="40" cy="30" rx="18" ry="12" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="3,3">
+        <ellipse cx="40" cy="30" rx="18" ry="12" fill="none" stroke="#00cfff" stroke-width="1.5" stroke-dasharray="3,3">
           <animateTransform attributeName="transform" type="rotate" values="0 40 30;360 40 30" dur="3s" repeatCount="indefinite"/>
         </ellipse>
       </g>
     </svg>
-    <div class="char-label">홍길동 교수<br><span style="color:#ff4f00;font-size:0.7rem">지식: <span id="prof-knowledge-label">100</span>%</span></div>
+    <div class="char-label" id="prof-label">홍길동 교수<br><span style="color:#ff4f00;font-size:0.7rem">지식: <span id="prof-knowledge-label">100</span>%</span></div>
   </div>
 
-  <!-- Student -->
   <div class="character" id="student-char">
     <svg class="student-svg" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" id="student-svg">
-      <!-- Body - hoodie -->
       <rect x="20" y="60" width="40" height="46" rx="8" fill="#1a3a1a"/>
-      <!-- Hood seam -->
       <path d="M32 60 Q40 68 48 60" fill="#152a15"/>
-      <!-- Pocket -->
       <rect x="27" y="82" width="26" height="14" rx="4" fill="#152a15"/>
-      <!-- Arms -->
       <rect x="6" y="60" width="15" height="9" rx="4.5" fill="#1a3a1a"/>
       <rect x="59" y="60" width="15" height="9" rx="4.5" fill="#1a3a1a"/>
-      <!-- Hands -->
       <circle cx="8" cy="72" r="5" fill="#c8956a"/>
       <circle cx="72" cy="72" r="5" fill="#c8956a"/>
-      <!-- Legs -->
       <rect x="24" y="102" width="13" height="16" rx="4" fill="#1a1a2e"/>
       <rect x="43" y="102" width="13" height="16" rx="4" fill="#1a1a2e"/>
-      <!-- Sneakers -->
       <ellipse cx="30" cy="118" rx="9" ry="4" fill="#fff"/>
       <ellipse cx="49" cy="118" rx="9" ry="4" fill="#fff"/>
       <ellipse cx="31" cy="117" rx="6" ry="2.5" fill="#00cfff"/>
       <ellipse cx="50" cy="117" rx="6" ry="2.5" fill="#00cfff"/>
-      <!-- Neck -->
       <rect x="33" y="50" width="14" height="13" rx="5" fill="#c8956a"/>
-      <!-- Head -->
       <ellipse cx="40" cy="36" rx="21" ry="20" fill="#c8956a"/>
-      <!-- Hair (messy engineering student) -->
       <path d="M19 32 Q22 18 40 16 Q58 18 61 32 Q56 20 48 18 Q40 15 32 18 Q24 20 19 32Z" fill="#2a1a0a"/>
       <path d="M19 30 Q20 25 22 26" fill="#2a1a0a"/>
       <path d="M61 30 Q60 25 58 26" fill="#2a1a0a"/>
-      <!-- Cowlick -->
       <path d="M38 16 Q39 10 42 13" stroke="#2a1a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <!-- Ears -->
       <ellipse cx="19" cy="38" rx="4" ry="5" fill="#b5805a"/>
       <ellipse cx="61" cy="38" rx="4" ry="5" fill="#b5805a"/>
-      <!-- Eyes (tired) -->
       <ellipse cx="33" cy="37" rx="4" ry="3.5" fill="white"/>
       <ellipse cx="47" cy="37" rx="4" ry="3.5" fill="white"/>
       <circle cx="34" cy="37" r="2.2" fill="#333"/>
       <circle cx="48" cy="37" r="2.2" fill="#333"/>
-      <!-- Undereye bags (sleep deprived) -->
       <path d="M30 41 Q33 43 36 41" stroke="#b08060" stroke-width="1" fill="none"/>
       <path d="M44 41 Q47 43 50 41" stroke="#b08060" stroke-width="1" fill="none"/>
-      <!-- Nose -->
       <ellipse cx="40" cy="43" rx="3" ry="2" fill="#b5805a"/>
-      <!-- Mouth (dumb smile) -->
       <path d="M34 50 Q40 55 46 50" stroke="#9a6040" stroke-width="1.5" fill="none"/>
-      <!-- Cheek blush -->
       <ellipse cx="27" cy="46" rx="5" ry="3" fill="rgba(255,100,80,0.2)"/>
       <ellipse cx="53" cy="46" rx="5" ry="3" fill="rgba(255,100,80,0.2)"/>
-      <!-- Brain glow (hidden) -->
       <g id="student-glow" opacity="0">
-        <ellipse cx="40" cy="28" rx="18" ry="12" fill="rgba(0,255,136,0.1)" stroke="var(--green)" stroke-width="1.5"/>
+        <ellipse cx="40" cy="28" rx="18" ry="12" fill="rgba(0,255,136,0.1)" stroke="#00ff88" stroke-width="1.5"/>
       </g>
     </svg>
     <div class="char-label">나 (공대생)<br><span style="color:#00ff88;font-size:0.7rem">IQ: <span id="student-iq-label">40</span></span></div>
@@ -454,7 +424,7 @@
 
 <div class="stats-row">
   <div class="stat-box">
-    <div class="stat-label">교수님 지식량</div>
+    <div class="stat-label" id="prof-stat-label">홍길동 교수 지식량</div>
     <div class="stat-value prof" id="prof-stat">100%</div>
   </div>
   <div class="stat-box">
@@ -469,13 +439,13 @@
 
 <div class="bar-section">
   <div class="bar-row">
-    <div class="bar-name" style="color:var(--accent)">교수님 🧠</div>
+    <div class="bar-name" style="color:#ff4f00" id="prof-bar-label">교수님 🧠</div>
     <div class="bar-track">
       <div class="bar-fill prof-fill" id="prof-bar" style="width:100%"></div>
     </div>
   </div>
   <div class="bar-row">
-    <div class="bar-name" style="color:var(--green)">내 머리 🤯</div>
+    <div class="bar-name" style="color:#00ff88">내 머리 🤯</div>
     <div class="bar-track">
       <div class="bar-fill student-fill" id="student-bar" style="width:4%"></div>
     </div>
@@ -495,7 +465,189 @@
   <div id="log-box"></div>
 </div>
 
+<div class="toast" id="toast"></div>
+
+<div class="made-by">Made by <a href="https://github.com/Bluenouls" target="_blank" rel="noopener noreferrer">Finn</a></div>
+
 <script>
+// ============================================================
+// AUDIO ENGINE (Web Audio API — 외부 파일 없음)
+// ============================================================
+let audioCtx = null;
+let soundEnabled = false;
+
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('sound-btn');
+  if (soundEnabled) {
+    btn.textContent = '🔊 소리 ON';
+    btn.className = 'on';
+    playBootSound();
+    showToast('🔊 효과음 ON!');
+  } else {
+    btn.textContent = '🔇 소리 OFF';
+    btn.className = '';
+    showToast('🔇 효과음 OFF');
+  }
+}
+
+// ⚡ 지식 강탈 시작음 — 전기 지지직
+function playStealSound() {
+  if (!soundEnabled) return;
+  const ctx = getCtx();
+  const now = ctx.currentTime;
+
+  // 전기 스파크 (노이즈 버스트 6개)
+  for (let i = 0; i < 6; i++) {
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.08, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let j = 0; j < d.length; j++) d[j] = (Math.random() * 2 - 1) * (1 - j / d.length);
+    const src = ctx.createBufferSource();
+    const filt = ctx.createBiquadFilter();
+    filt.type = 'bandpass';
+    filt.frequency.value = 2000 + i * 800;
+    filt.Q.value = 0.5;
+    const g = ctx.createGain();
+    g.gain.value = 0.15;
+    src.buffer = buf;
+    src.connect(filt); filt.connect(g); g.connect(ctx.destination);
+    src.start(now + i * 0.07);
+  }
+
+  // 저음 웅웅
+  const osc = ctx.createOscillator();
+  const og = ctx.createGain();
+  osc.connect(og); og.connect(ctx.destination);
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(80, now);
+  osc.frequency.exponentialRampToValueAtTime(40, now + 0.5);
+  og.gain.setValueAtTime(0.15, now);
+  og.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+  osc.start(now); osc.stop(now + 0.5);
+}
+
+// 🧠 흡수 완료음 — 밝은 코드 상승
+function playAbsorbSound() {
+  if (!soundEnabled) return;
+  const ctx = getCtx();
+  const now = ctx.currentTime;
+  const notes = [523.25, 659.25, 783.99, 1046.5]; // C5 E5 G5 C6
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.0, now + i * 0.09);
+    g.gain.linearRampToValueAtTime(0.14, now + i * 0.09 + 0.04);
+    g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.45);
+    osc.start(now + i * 0.09);
+    osc.stop(now + i * 0.09 + 0.5);
+  });
+
+  // 반짝 하이톤
+  const hi = ctx.createOscillator();
+  const hg = ctx.createGain();
+  hi.connect(hg); hg.connect(ctx.destination);
+  hi.type = 'triangle';
+  hi.frequency.value = 2093;
+  hg.gain.setValueAtTime(0.07, now + 0.35);
+  hg.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+  hi.start(now + 0.35); hi.stop(now + 0.75);
+}
+
+// ❌ 실패음 — 내려가는 삐-삐-빕
+function playFailSound() {
+  if (!soundEnabled) return;
+  const ctx = getCtx();
+  const now = ctx.currentTime;
+  [300, 220, 150].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.12, now + i * 0.13);
+    g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.13 + 0.12);
+    osc.start(now + i * 0.13);
+    osc.stop(now + i * 0.13 + 0.15);
+  });
+}
+
+// 🎓 승리 팡파레
+function playVictorySound() {
+  if (!soundEnabled) return;
+  const ctx = getCtx();
+  const now = ctx.currentTime;
+
+  // 멜로디
+  [[523,0],[659,0.13],[784,0.26],[1047,0.42],[880,0.65],[1047,0.8],[1319,1.0]].forEach(([f,t]) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.type = 'triangle';
+    osc.frequency.value = f;
+    g.gain.setValueAtTime(0.18, now + t);
+    g.gain.exponentialRampToValueAtTime(0.001, now + t + 0.28);
+    osc.start(now + t); osc.stop(now + t + 0.35);
+  });
+
+  // 심벌즈 노이즈
+  [0.42, 1.0].forEach(t => {
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.4, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1)*(1-i/d.length);
+    const src = ctx.createBufferSource();
+    const filt = ctx.createBiquadFilter();
+    filt.type = 'highpass'; filt.frequency.value = 6000;
+    const g = ctx.createGain(); g.gain.value = 0.06;
+    src.buffer = buf;
+    src.connect(filt); filt.connect(g); g.connect(ctx.destination);
+    src.start(now + t);
+  });
+}
+
+// 🔊 부팅음
+function playBootSound() {
+  if (!soundEnabled) return;
+  const ctx = getCtx();
+  const now = ctx.currentTime;
+  [440, 554, 659].forEach((f, i) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.type = 'sine'; osc.frequency.value = f;
+    g.gain.setValueAtTime(0.09, now + i * 0.1);
+    g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.2);
+    osc.start(now + i * 0.1); osc.stop(now + i * 0.1 + 0.25);
+  });
+}
+
+// 이름 설정 짹짹
+function playNameSound() {
+  if (!soundEnabled) return;
+  const ctx = getCtx();
+  const now = ctx.currentTime;
+  [880, 1108, 1319].forEach((f, i) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.type = 'sine'; osc.frequency.value = f;
+    g.gain.setValueAtTime(0.1, now + i * 0.08);
+    g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.18);
+    osc.start(now + i * 0.08); osc.stop(now + i * 0.08 + 0.22);
+  });
+}
+
+// ============================================================
+// GAME LOGIC
+// ============================================================
 const formulas = [
   "∫∫∫ dV = 죽고싶다",
   "lim(x→졸음) IQ = 0",
@@ -519,52 +671,45 @@ const formulas = [
   "벡터 내적 a·b = |a||b|cosθ",
 ];
 
-const statusMessages = [
-  "교수님이 뭔가 이상함을 눈치채고 있습니다...",
-  "지식이 빠져나가는 중... 교수님 멍해짐",
-  "교수님: '요즘 왜 이렇게 정신이 없지...'",
-  "강탈 성공! 교수님 잠시 멍청해짐",
-  "교수님이 갑자기 칠판 앞에서 멈춤",
-  "흡수 중... 뇌 용량 부족 경고!",
-  "교수님 눈빛이 흐릿해지는 중...",
-  "지식 패킷 손실 없음. 완벽한 강탈.",
-  "교수님: '내가 왜 여기 있지?'",
-  "뇌파 동기화 완료. 흡수율 87%.",
-];
-
-const failMessages = [
-  "❌ 교수님이 갑자기 출석 불렀습니다. 강탈 실패.",
-  "❌ 와이파이 끊김. 지식 패킷 유실.",
-  "❌ 교수님이 안경을 닦으며 눈치챘습니다.",
-  "❌ 잡혔습니다... 아닌척 했습니다.",
-];
-
 let profKnowledge = 100;
 let studentIQ = 40;
 let stolenCount = 0;
 let isAnimating = false;
-let activeParticles = [];
+let profName = '홍길동';
 
-function getArenaRect() {
-  return document.getElementById('arena').getBoundingClientRect();
+function confirmName() {
+  const input = document.getElementById('prof-name-input').value.trim();
+  if (!input) return;
+  profName = input;
+  document.getElementById('prof-label').innerHTML =
+    `${profName} 교수<br><span style="color:#ff4f00;font-size:0.7rem">지식: <span id="prof-knowledge-label">${Math.max(0,profKnowledge)}</span>%</span>`;
+  document.getElementById('prof-stat-label').textContent = `${profName} 교수 지식량`;
+  playNameSound();
+  showToast(`👨‍🏫 "${profName} 교수님" 타겟 설정!`);
+  addLog(`타겟 변경 → [${profName} 교수] 추적 시작`, 'important');
+}
+
+document.getElementById('prof-name-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmName();
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 function getProfHeadPos() {
   const prof = document.getElementById('prof-char').getBoundingClientRect();
   const arena = document.getElementById('arena').getBoundingClientRect();
-  return {
-    x: prof.left - arena.left + prof.width / 2,
-    y: prof.top - arena.top + 20
-  };
+  return { x: prof.left - arena.left + prof.width / 2, y: prof.top - arena.top + 20 };
 }
 
 function getStudentHeadPos() {
   const stu = document.getElementById('student-char').getBoundingClientRect();
   const arena = document.getElementById('arena').getBoundingClientRect();
-  return {
-    x: stu.left - arena.left + stu.width / 2,
-    y: stu.top - arena.top + 20
-  };
+  return { x: stu.left - arena.left + stu.width / 2, y: stu.top - arena.top + 20 };
 }
 
 function spawnParticle(text, fromX, fromY, toX, toY, delay) {
@@ -585,15 +730,12 @@ function spawnParticle(text, fromX, fromY, toX, toY, delay) {
     const elapsed = now - startTime;
     const t = Math.min(elapsed / duration, 1);
     const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-
     const x = fromX + (toX - fromX) * ease + Math.sin(t * Math.PI * 2) * 15;
     const y = fromY + (toY - fromY) * ease - Math.sin(t * Math.PI) * 30;
-
     el.style.left = x + 'px';
     el.style.top = y + 'px';
     el.style.opacity = t < 0.1 ? t * 10 : t > 0.85 ? (1-t) * 6.67 : 1;
     el.style.transform = `scale(${0.7 + t * 0.5}) rotate(${Math.sin(t*10)*8}deg)`;
-
     if (t < 1) requestAnimationFrame(animate);
     else el.remove();
   }
@@ -616,19 +758,41 @@ function updateUI() {
   document.getElementById('prof-stat').textContent = Math.max(0, profKnowledge) + '%';
   document.getElementById('student-stat').textContent = studentIQ;
   document.getElementById('stolen-stat').textContent = stolenCount + '개';
-  document.getElementById('prof-knowledge-label').textContent = Math.max(0, profKnowledge);
+  const kl = document.getElementById('prof-knowledge-label');
+  if (kl) kl.textContent = Math.max(0, profKnowledge);
   document.getElementById('student-iq-label').textContent = studentIQ;
 }
+
+const statusPool = [
+  () => `${profName} 교수님이 뭔가 이상함을 눈치채고 있습니다...`,
+  () => `지식이 빠져나가는 중... ${profName} 교수님 멍해짐`,
+  () => `${profName} 교수님: '요즘 왜 이렇게 정신이 없지...'`,
+  () => `강탈 성공! ${profName} 교수님 잠시 멍청해짐`,
+  () => `${profName} 교수님이 갑자기 칠판 앞에서 멈춤`,
+  () => `흡수 중... 뇌 용량 부족 경고!`,
+  () => `${profName} 교수님 눈빛이 흐릿해지는 중...`,
+  () => `지식 패킷 손실 없음. 완벽한 강탈.`,
+  () => `${profName} 교수님: '내가 왜 여기 있지?'`,
+  () => `뇌파 동기화 완료. 흡수율 87%.`,
+];
+
+const failPool = [
+  () => `❌ ${profName} 교수님이 출석 불렀습니다. 강탈 실패.`,
+  () => `❌ 와이파이 끊김. 지식 패킷 유실.`,
+  () => `❌ ${profName} 교수님이 안경을 닦으며 눈치챘습니다.`,
+  () => `❌ 잡혔습니다... 아닌척 했습니다.`,
+  () => `❌ ${profName} 교수님이 갑자기 시험 공지. 패닉.`,
+];
 
 function stealKnowledge() {
   if (isAnimating || profKnowledge <= 0) return;
 
-  // 20% chance of failure (병맛)
   if (Math.random() < 0.15) {
-    const msg = failMessages[Math.floor(Math.random() * failMessages.length)];
+    const msg = failPool[Math.floor(Math.random() * failPool.length)]();
     document.getElementById('status-text').textContent = msg;
     document.getElementById('status-text').style.color = 'var(--accent)';
     addLog(msg, 'fail');
+    playFailSound();
     const profSvg = document.getElementById('prof-svg');
     profSvg.classList.add('shaking');
     setTimeout(() => profSvg.classList.remove('shaking'), 500);
@@ -639,36 +803,32 @@ function stealKnowledge() {
   const btn = document.getElementById('steal-btn');
   btn.disabled = true;
 
+  playStealSound();
+
   const profHead = getProfHeadPos();
   const stuHead = getStudentHeadPos();
 
-  // Show brain glow
   document.getElementById('brain-glow').setAttribute('opacity', '1');
   document.getElementById('student-glow').setAttribute('opacity', '1');
 
-  // Spawn 4-7 particles
   const count = 4 + Math.floor(Math.random() * 4);
   const shuffled = [...formulas].sort(() => Math.random() - 0.5).slice(0, count);
+  shuffled.forEach((f, i) => spawnParticle(f, profHead.x, profHead.y, stuHead.x, stuHead.y, i * 220));
 
-  shuffled.forEach((f, i) => {
-    spawnParticle(f, profHead.x, profHead.y, stuHead.x, stuHead.y, i * 220);
-  });
-
-  // Shake professor
   const profSvg = document.getElementById('prof-svg');
   setTimeout(() => { profSvg.classList.add('shaking'); }, 100);
   setTimeout(() => { profSvg.classList.remove('shaking'); }, 600);
 
-  // Absorbing glow on student
   const stuSvg = document.getElementById('student-svg');
-  setTimeout(() => { stuSvg.classList.add('absorbing'); }, 1200);
+  setTimeout(() => {
+    stuSvg.classList.add('absorbing');
+    playAbsorbSound();
+  }, 1200);
 
-  // Status message
-  const statusMsg = statusMessages[Math.floor(Math.random() * statusMessages.length)];
+  const statusMsg = statusPool[Math.floor(Math.random() * statusPool.length)]();
   document.getElementById('status-text').textContent = statusMsg;
   document.getElementById('status-text').style.color = 'var(--blue)';
 
-  // Update stats after delay
   const stolen = 3 + Math.floor(Math.random() * 8);
   const iqGain = 1 + Math.floor(Math.random() * 4);
 
@@ -678,19 +838,20 @@ function stealKnowledge() {
     stolenCount++;
     updateUI();
 
-    const formula = shuffled[shuffled.length - 1];
-    addLog(`흡수 완료: "${formula}" (+IQ ${iqGain})`, 'success');
+    addLog(`흡수 완료: "${shuffled[shuffled.length-1]}" (+IQ ${iqGain})`, 'success');
 
     stuSvg.classList.remove('absorbing');
     document.getElementById('brain-glow').setAttribute('opacity', '0');
     document.getElementById('student-glow').setAttribute('opacity', '0');
 
     if (profKnowledge <= 0) {
-      document.getElementById('status-text').textContent = "교수님 지식 완전 소진... 이제 교수님은 유튜브나 보심";
+      document.getElementById('status-text').textContent =
+        `${profName} 교수님 지식 완전 소진... 이제 유튜브나 보심`;
       document.getElementById('status-text').style.color = 'var(--yellow)';
       document.getElementById('victory-banner').style.display = 'block';
       btn.textContent = '🎓 강탈 완료 🎓';
-      addLog('🏆 교수님 지식 완전 강탈 성공! 학점 4.5 확정', 'important');
+      addLog(`🏆 ${profName} 교수님 지식 완전 강탈! 학점 4.5 확정`, 'important');
+      playVictorySound();
     } else {
       btn.disabled = false;
       document.getElementById('status-text').style.color = '#777';
@@ -706,16 +867,16 @@ function stealKnowledge() {
   ripple.className = 'ripple';
   const size = Math.max(rect.width, rect.height);
   ripple.style.width = ripple.style.height = size + 'px';
-  ripple.style.left = '50%';
-  ripple.style.top = '50%';
+  ripple.style.left = '50%'; ripple.style.top = '50%';
   ripple.style.marginLeft = ripple.style.marginTop = -size/2 + 'px';
   btn.appendChild(ripple);
   setTimeout(() => ripple.remove(), 600);
 }
 
-// Init log
+// Init
 addLog('시스템 부팅 완료. 교수님 탐지 중...', 'important');
 addLog('경고: 이 프로그램은 비윤리적입니다. (그래서 씁니다)', '');
+addLog('💡 소리 버튼을 눌러 효과음을 켜세요', '');
 updateUI();
 </script>
 </body>
