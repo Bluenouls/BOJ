@@ -1,2 +1,3 @@
-# Blue0551
-This is an auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
+# 백준의 끝
+![ending](ending.png)
+![the end](the_end.png)
